@@ -6,7 +6,8 @@ const logger = require('../../shared/utils/logger');
 
 const worker = new Worker('audio-queue', downloadProcessor, { 
   connection,
-  lockDuration: 600000 
+  lockDuration: 600000,
+  concurrency: process.env.WORKER_CONCURRENCY ? parseInt(process.env.WORKER_CONCURRENCY) : 3 // Process 3 downloads at the same time
 });
 
 worker.on('completed', job => {

@@ -3,103 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YT Audio/Video Pro</title>
+    <title>YT Downloader Pro | Fast & Free Video Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .card { background: white; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
-        h1 { font-size: 1.5rem; margin-bottom: 1.5rem; }
-        input, select { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; box-sizing: border-box; margin-bottom: 1rem; outline: none; transition: border 0.2s; font-size: 1rem; }
-        input:focus, select:focus { border-color: var(--primary); }
-        button { width: 100%; background: var(--primary); color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status-box { margin-top: 1.5rem; padding: 1rem; border-radius: 0.5rem; display: none; background: #eff6ff; border: 1px solid #dbeafe; }
-        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .success-link { display: inline-block; margin-top: 10px; color: var(--primary); text-decoration: none; font-weight: bold; }
-        .label { text-align: left; font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 5px; display: block; }
+        :root {
+            --orange-primary: #f97316;
+            --orange-hover: #ea580c;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfcfd;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card-3d {
+            background: #ffffff;
+            box-shadow: 
+                0 20px 50px rgba(249, 115, 22, 0.05),
+                0 10px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-3d {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(249, 115, 22, 0.4);
+        }
+        .btn-3d:active {
+            transform: translateY(1px);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .platform-chip {
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            transition: all 0.2s ease;
+        }
+        .platform-chip:hover {
+            border-color: #fdba74;
+            color: #f97316;
+            transform: translateY(-1px);
+        }
+        input, select {
+            background: #f8fafc !important;
+            border: 2px solid #f1f5f9 !important;
+            transition: all 0.2s ease !important;
+        }
+        input:focus, select:focus {
+            border-color: #fdba74 !important;
+            background: #ffffff !important;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1) !important;
+        }
+        /* Mobile-first adjustments for text */
+        @media (max-width: 640px) {
+            .hero-title { font-size: 2.75rem; line-height: 1.1; }
+        }
     </style>
 </head>
-<body>
-    <div class="card">
-        <h1>🎵 YT Downloader Pro</h1>
-        
+<body class="min-h-screen relative overflow-x-hidden">
+
+    <!-- Ambient 3D Shapes -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-5%] left-[-5%] w-[50%] md:w-[30%] h-[30%] bg-orange-100 rounded-full blur-[80px] md:blur-[100px] opacity-60"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] md:w-[40%] h-[40%] bg-orange-50 rounded-full blur-[100px] md:blur-[120px] opacity-70"></div>
+        <div class="hidden sm:block absolute top-[20%] right-[10%] w-24 h-24 bg-orange-200/30 rounded-3xl rotate-12 animate-float"></div>
+        <div class="hidden sm:block absolute bottom-[20%] left-[15%] w-16 h-16 bg-orange-300/20 rounded-full animate-float" style="animation-delay: -2s"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="max-w-7xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-10">
+        <div class="flex items-center space-x-3">
+            <div class="bg-orange-500 p-2 md:p-2.5 rounded-xl md:rounded-2xl shadow-lg shadow-orange-500/30 rotate-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <span class="text-xl md:text-2xl font-black tracking-tight text-slate-800">YT <span class="text-orange-500">Pro</span></span>
+        </div>
        
-        <span class="label">Video/Reel URL</span>
-        <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
-            <input type="text" id="url" placeholder="Paste YouTube, Insta, TikTok, Reddit, X link..." style="margin-bottom: 0;">
-            <button id="fetch-btn" onclick="fetchInfo()" style="width: auto; padding: 0.75rem 1.5rem; background: #64748b;">Fetch</button>
+    </nav>
+
+    <!-- Main Section -->
+    <main class="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-16 relative z-10">
+        <div class="text-center mb-10 md:mb-16">
+            <div class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-6">
+                ✨ Fast, Free & HD Quality
+            </div>
+            <h1 class="hero-title text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 mb-6 md:mb-8">
+                Media Downloads <br class="hidden sm:block"/>
+                <span class="gradient-text">Redefined.</span>
+            </h1>
+            <p class="text-slate-500 text-base md:text-xl max-w-2xl mx-auto font-medium px-2">
+                The ultimate 3D experience for grabbing your favorite reels, videos, and music in seconds.
+            </p>
         </div>
 
-        <div style="margin-bottom: 1.5rem; text-align: left;">
-            <span class="label">Supported Platforms</span>
-            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">YouTube</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Instagram</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Facebook</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">TikTok</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Twitter / X</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Reddit</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Pinterest</span>
-                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Twitch</span>
+        <!-- Tool Card -->
+        <div class="card-3d p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden">
+            <div class="space-y-8 md:space-y-10">
+                <!-- URL Input Area -->
+                <div>
+                    <label class="block text-[10px] md:text-sm font-bold text-slate-400 mb-3 md:mb-4 ml-1">PASTE VIDEO URL</label>
+                    <div class="flex flex-col md:flex-row gap-3 md:gap-4">
+                        <div class="relative flex-grow">
+                            <input 
+                                id="url"
+                                type="text" 
+                                placeholder="YouTube, TikTok, Instagram, X..." 
+                                class="w-full rounded-2xl md:rounded-3xl px-6 md:px-8 py-4 md:py-5 text-slate-700 font-medium outline-none text-sm md:text-base"
+                            >
+                        </div>
+                        <button 
+                            id="fetch-btn"
+                            onclick="fetchInfo()"
+                            class="btn-3d text-white font-black px-8 md:px-12 py-4 md:py-5 rounded-2xl md:rounded-3xl active:scale-95 flex items-center justify-center space-x-2 w-full md:w-auto"
+                        >
+                            <span id="fetch-text">Fetch Details</span>
+                            <div id="fetch-loader" class="hidden animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Platform Badges -->
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">Youtube</span>
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">Instagram</span>
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">Tiktok</span>
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">Facebook</span>
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">X / Twitter</span>
+                    <span class="platform-chip px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-xs font-bold text-slate-500">Reddit</span>
+                </div>
+
+                <!-- Dynamic Video Info (Hidden by default) -->
+                <div id="video-info" class="hidden space-y-6 bg-slate-50/80 p-5 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-white">
+                    <div class="flex flex-col lg:flex-row gap-6 md:gap-8">
+                        <div class="relative w-full lg:w-56 shrink-0">
+                            <img id="video-thumb" src="" alt="Thumbnail" class="w-full h-auto rounded-2xl md:rounded-3xl shadow-2xl shadow-orange-200/50 object-cover lg:rotate-[-2deg]">
+                            <div id="video-duration" class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 rounded-lg font-bold"></div>
+                        </div>
+                        <div class="flex-grow">
+                            <h2 id="video-title" class="text-lg md:text-xl font-extrabold text-slate-800 mb-3 leading-tight"></h2>
+                            <div class="flex items-center space-x-3 md:space-x-4 mb-4">
+                                <div class="bg-white p-2 rounded-xl shadow-sm shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div id="video-uploader" class="font-bold text-slate-800 text-xs md:text-sm"></div>
+                                    <div id="channel-subs" class="text-[10px] text-slate-400 font-bold uppercase tracking-wider"></div>
+                                </div>
+                            </div>
+                            <div id="video-desc" class="text-xs md:text-sm text-slate-500 line-clamp-2 italic leading-relaxed"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 md:gap-4">
+                        <div class="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 text-center shadow-sm">
+                            <div class="text-[9px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Views</div>
+                            <div id="video-views" class="text-base md:text-lg font-black text-slate-800"></div>
+                        </div>
+                        <div class="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 text-center shadow-sm">
+                            <div class="text-[9px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Likes</div>
+                            <div id="video-likes" class="text-base md:text-lg font-black text-slate-800"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Format Selection -->
+                <div class="grid lg:grid-cols-2 gap-6 items-end">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-400 mb-3 ml-1">CHOOSE FORMAT</label>
+                            <select id="format" class="w-full appearance-none rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-slate-700 font-bold cursor-pointer text-sm md:text-base">
+                                <option value="mp3">🎵 MP3 (Crystal Audio)</option>
+                                <option value="mp4">🎬 MP4 (Ultra Video)</option>
+                            </select>
+                        </div>
+                        <div id="quality-wrapper" class="hidden">
+                            <label class="block text-sm font-bold text-slate-400 mb-3 ml-1">SELECT QUALITY</label>
+                            <select id="quality" class="w-full appearance-none rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-slate-700 font-bold cursor-pointer text-sm md:text-base">
+                                <option value="high">4K / High Definition</option>
+                                <option value="medium">720p / Standard</option>
+                                <option value="low">360p / Data Saver</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button 
+                        id="btn"
+                        onclick="startProcess()"
+                        class="w-full h-[60px] md:h-[68px] btn-3d text-white font-black text-base md:text-lg rounded-xl md:rounded-3xl active:scale-[0.98] flex items-center justify-center space-x-3"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                        </svg>
+                        <span id="btn-text">Start Download</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Tracking Area -->
+            <div id="status-box" class="hidden mt-8 md:mt-12 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-orange-50 border-2 border-dashed border-orange-200 text-center">
+                <div id="loader" class="mb-4 md:mb-6 flex justify-center">
+                    <div class="relative">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-orange-100 border-t-orange-500 animate-spin"></div>
+                    </div>
+                </div>
+                <div id="status-text" class="text-orange-600 font-black uppercase tracking-wider text-xs md:text-sm mb-4 md:mb-6">Processing your file...</div>
+                <div id="download-area" class="flex justify-center"></div>
             </div>
         </div>
+    </main>
 
-        <div id="video-info" style="display: none; margin-bottom: 1.5rem; text-align: left; background: #f1f5f9; padding: 1rem; border-radius: 0.5rem;">
-            <img id="video-thumb" src="" alt="Thumbnail" style="width: 100%; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-            <div id="video-title" style="font-weight: 700; font-size: 1rem; line-height: 1.4; color: #1e293b; margin-bottom: 0.5rem;"></div>
-            
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem;">
-                <div style="flex: 1;">
-                    <div id="video-uploader" style="font-weight: 600; font-size: 0.85rem; color: #2563eb;"></div>
-                    <div id="channel-subs" style="font-size: 0.75rem; color: #64748b;"></div>
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer class="mt-12 md:mt-24 py-8 md:py-12 text-center text-slate-400 font-medium text-[10px] md:text-sm px-6">
+        <p>&copy; 2026 YT Downloader</p>
+    </footer>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem;">
-                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
-                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Views</div>
-                    <div id="video-views" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
-                </div>
-                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
-                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Likes</div>
-                    <div id="video-likes" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
-                </div>
-                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
-                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Duration</div>
-                    <div id="video-duration" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
-                </div>
-            </div>
-
-            <div id="video-desc" style="font-size: 0.8rem; color: #475569; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-height: 1.4;"></div>
-        </div>
-
-        <span class="label">Select Format</span>
-        <select id="format">
-            <option value="mp3">🎵 MP3 (Audio)</option>
-            <option value="mp4">🎥 MP4 (Video)</option>
-        </select>
-
-        <div id="quality-wrapper" style="display: none;">
-            <span class="label">Video Quality</span>
-            <select id="quality">
-                <option value="high">High (Best Available)</option>
-                <option value="medium">Medium (720p)</option>
-                <option value="low">Low (Worst/Smallest)</option>
-            </select>
-        </div>
-
-        <button id="btn" onclick="startProcess()">Start Download</button>
-        
-        <div id="status-box">
-            <div id="loader" class="spinner"></div>
-            <div id="status-text">Starting...</div>
-            <div id="download-area"></div>
+    <!-- Modal System -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 hidden">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="bg-white max-w-sm w-full p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] relative z-10 text-center shadow-2xl border border-white">
+            <div id="modal-icon" class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3 shadow-lg"></div>
+            <h2 id="modal-title" class="text-xl md:text-2xl font-extrabold text-slate-800 mb-2 md:mb-3"></h2>
+            <p id="modal-text" class="text-sm md:text-base text-slate-500 mb-6 md:mb-8 font-medium leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full bg-slate-100 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-slate-600 hover:bg-slate-200 transition-colors">Got it</button>
         </div>
     </div>
 
     <script>
-        // Format change listener for Quality Toggle
+        // Toggle Quality for MP4
         document.getElementById('format').addEventListener('change', (e) => {
             const qualityWrapper = document.getElementById('quality-wrapper');
             qualityWrapper.style.display = e.target.value === 'mp4' ? 'block' : 'none';
@@ -108,19 +258,18 @@
         async function fetchInfo() {
             const urlInput = document.getElementById('url');
             const fetchBtn = document.getElementById('fetch-btn');
-            const statusText = document.getElementById('status-text');
-            const statusBox = document.getElementById('status-box');
+            const fetchText = document.getElementById('fetch-text');
+            const fetchLoader = document.getElementById('fetch-loader');
             const videoInfo = document.getElementById('video-info');
             
-            if (!urlInput.value) return alert("Please enter a URL first!");
+            if (!urlInput.value) {
+                showModal("Wait a sec!", "We need a link to start the magic.", "warning");
+                return;
+            }
             
             fetchBtn.disabled = true;
-            fetchBtn.innerText = "Fetching...";
-            statusBox.style.display = 'block';
-            document.getElementById('download-area').innerHTML = '';
-            document.getElementById('loader').style.display = 'block';
-            statusText.innerText = "Fetching video details...";
-            videoInfo.style.display = 'none';
+            fetchText.classList.add('hidden');
+            fetchLoader.classList.remove('hidden');
             
             try {
                 const res = await fetch('/info', {
@@ -133,43 +282,38 @@
                 if (data.success) {
                     document.getElementById('video-thumb').src = data.thumbnail;
                     document.getElementById('video-title').textContent = data.title;
-                    
-                    document.getElementById('video-uploader').textContent = data.uploader || 'Unknown Channel';
+                    document.getElementById('video-uploader').textContent = data.uploader || 'Unknown Creator';
                     
                     const formatNum = (num) => num ? new Intl.NumberFormat('en-US', { notation: "compact", compactDisplay: "short" }).format(num) : 'N/A';
                     const formatTime = (secs) => secs ? new Date(secs * 1000).toISOString().substring(14, 19) : '00:00';
 
-                    document.getElementById('channel-subs').textContent = data.channel_follower_count ? `${formatNum(data.channel_follower_count)} subs` : '';
+                    document.getElementById('channel-subs').textContent = data.channel_follower_count ? `${formatNum(data.channel_follower_count)} followers` : 'Premium Content';
                     document.getElementById('video-views').textContent = formatNum(data.view_count);
                     document.getElementById('video-likes').textContent = formatNum(data.like_count);
                     document.getElementById('video-duration').textContent = formatTime(data.duration);
-                    document.getElementById('video-desc').textContent = data.description || 'No description available.';
+                    document.getElementById('video-desc').textContent = data.description || 'Enjoy this high-quality content.';
 
-                    videoInfo.style.display = 'block';
+                    videoInfo.classList.remove('hidden');
                     
                     if (data.resolutions && data.resolutions.length > 0) {
                         const qSelect = document.getElementById('quality');
                         qSelect.innerHTML = '';
-                        // Map the top 3 resolutions to High, Medium, Low to maintain backend compatibility
                         const labels = ['High', 'Medium', 'Low'];
                         const values = ['high', 'medium', 'low'];
                         for (let i = 0; i < Math.min(3, data.resolutions.length); i++) {
-                            qSelect.innerHTML += `<option value="${values[i]}">${labels[i]} (${data.resolutions[i]}p)</option>`;
+                            qSelect.innerHTML += `<option value="${values[i]}">${labels[i]} Quality (${data.resolutions[i]}p)</option>`;
                         }
                     }
-                    
-                    statusBox.style.display = 'none';
                 } else {
-                    statusText.innerText = "❌ Fetch failed: " + (data.error || "Unknown error");
-                    document.getElementById('loader').style.display = 'none';
+                    showModal("Oops!", data.error || "We couldn't reach that link. Check the URL.", "error");
                 }
             } catch (err) {
-                statusText.innerText = "Error connecting to server.";
-                document.getElementById('loader').style.display = 'none';
+                showModal("Connection Lost", "The server is taking a nap. Please try again soon.", "error");
             }
             
             fetchBtn.disabled = false;
-            fetchBtn.innerText = "Fetch";
+            fetchText.classList.remove('hidden');
+            fetchLoader.classList.add('hidden');
         }
 
         async function startProcess() {
@@ -177,21 +321,25 @@
             const formatInput = document.getElementById('format');
             const qualityInput = document.getElementById('quality');
             const btn = document.getElementById('btn');
+            const btnText = document.getElementById('btn-text');
             const statusBox = document.getElementById('status-box');
             const statusText = document.getElementById('status-text');
             const downloadArea = document.getElementById('download-area');
 
-            if (!urlInput.value) return alert("URL please!");
+            if (!urlInput.value) {
+                showModal("Almost there!", "Fetch the video first before starting the download.", "warning");
+                return;
+            }
 
             const selectedFormat = formatInput.value;
             const selectedQuality = qualityInput.value;
 
-            // UI Reset
             btn.disabled = true;
-            statusBox.style.display = 'block';
-            document.getElementById('loader').style.display = 'block';
+            btnText.innerText = "Syncing...";
+            statusBox.classList.remove('hidden');
+            document.getElementById('loader').classList.remove('hidden');
             downloadArea.innerHTML = '';
-            statusText.innerText = "Sending to server...";
+            statusText.innerText = "Initiating high-speed connection...";
 
             try {
                 const res = await fetch('/jobs', {
@@ -207,32 +355,67 @@
 
                 if (data.jobId) {
                     const poll = setInterval(async () => {
-                        const sRes = await fetch(`/jobs/${data.jobId}`);
-                        const sData = await sRes.json();
-                        
-                        statusText.innerText = `Current Status: ${sData.status.toUpperCase()}`;
+                        try {
+                            const sRes = await fetch(`/jobs/${data.jobId}`);
+                            const sData = await sRes.json();
+                            
+                            statusText.innerText = `Work in progress: ${sData.status.toUpperCase()}`;
 
-                        if (sData.status === 'done') {
+                            if (sData.status === 'done') {
+                                clearInterval(poll);
+                                document.getElementById('loader').classList.add('hidden');
+                                statusText.innerHTML = `<span class="text-orange-500 font-black">YOUR FILE IS READY!</span>`;
+                                
+                                const linkLabel = selectedFormat === 'mp4' ? "Download MP4 Video" : "Download MP3 Audio";
+                                downloadArea.innerHTML = `
+                                    <a href="${sData.download_url}" target="_blank" class="inline-block btn-3d text-white px-8 py-3 rounded-xl font-black transition-all text-sm md:text-base">
+                                        ${linkLabel}
+                                    </a>
+                                `;
+                                btn.disabled = false;
+                                btnText.innerText = "Start Download";
+                            } else if (sData.status === 'failed') {
+                                clearInterval(poll);
+                                document.getElementById('loader').classList.add('hidden');
+                                statusText.innerHTML = `<span class="text-red-500">❌ Error: ${sData.error_message || "Server issue"}</span>`;
+                                btn.disabled = false;
+                                btnText.innerText = "Start Download";
+                            }
+                        } catch (e) {
                             clearInterval(poll);
-                            document.getElementById('loader').style.display = 'none';
-                            statusText.innerText = "✅ Process Complete!";
-                            
-                            const linkText = selectedFormat === 'mp4' ? "Download Video (MP4)" : "Download Audio (MP3)";
-                            downloadArea.innerHTML = `<a class="success-link" href="${sData.download_url}" target="_blank">${linkText}</a>`;
-                            
-                            btn.disabled = false;
-                        } else if (sData.status === 'failed') {
-                            clearInterval(poll);
-                            document.getElementById('loader').style.display = 'none';
-                            statusText.innerText = "❌ Failed: " + (sData.error_message || "Unknown error");
-                            btn.disabled = false;
+                            statusText.innerText = "❌ Connection failed.";
                         }
                     }, 2000);
                 }
             } catch (e) {
                 statusText.innerText = "Error connecting to server.";
                 btn.disabled = false;
+                btnText.innerText = "Start Download";
             }
+        }
+
+        function showModal(title, message, type) {
+            const modal = document.getElementById('modal');
+            const mTitle = document.getElementById('modal-title');
+            const mText = document.getElementById('modal-text');
+            const mIcon = document.getElementById('modal-icon');
+
+            mTitle.innerText = title;
+            mText.innerText = message;
+
+            if (type === 'error' || type === 'warning') {
+                mIcon.className = "w-16 h-16 md:w-20 md:h-20 bg-red-50 text-red-500 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3 shadow-lg";
+                mIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`;
+            } else {
+                mIcon.className = "w-16 h-16 md:w-20 md:h-20 bg-orange-50 text-orange-500 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3 shadow-lg";
+                mIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
         }
     </script>
 </body>

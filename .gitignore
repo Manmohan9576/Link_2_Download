@@ -26,3 +26,7 @@ Thumbs.db
 # IDE / Editor
 .vscode/
 .idea/
+
+# project all most important files
+infra/digitalocean/docker-compose.prod.yml
+

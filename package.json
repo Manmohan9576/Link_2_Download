@@ -1,0 +1,23 @@
+{
+  "name": "yt-audio-downloader-mono",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:api": "node apps/api/server.js",
+    "start:worker": "node apps/worker/worker.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1029.0",
+    "@aws-sdk/s3-request-presigner": "^3.1029.0",
+    "@fastify/cors": "^11.2.0",
+    "@fastify/static": "^9.1.0",
+    "axios": "^1.15.0",
+    "bullmq": "^5.73.4",
+    "dotenv": "^17.4.1",
+    "fastify": "^5.8.4",
+    "ioredis": "^5.10.1",
+    "pg": "^8.20.0",
+    "puppeteer": "^24.40.0",
+    "zod": "^4.3.6"
+  }
+}

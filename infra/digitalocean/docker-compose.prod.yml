@@ -1,0 +1,32 @@
+services:
+  api:
+    build: 
+      context: ../../
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../downloads:/app/downloads
+    restart: always
+
+  worker:
+    build: 
+      context: ../../
+      dockerfile: apps/worker/Dockerfile
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../downloads:/app/downloads
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ../docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+    restart: always

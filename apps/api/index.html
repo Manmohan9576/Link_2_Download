@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Audio/Video Pro</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+        h1 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        input, select { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; box-sizing: border-box; margin-bottom: 1rem; outline: none; transition: border 0.2s; font-size: 1rem; }
+        input:focus, select:focus { border-color: var(--primary); }
+        button { width: 100%; background: var(--primary); color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #status-box { margin-top: 1.5rem; padding: 1rem; border-radius: 0.5rem; display: none; background: #eff6ff; border: 1px solid #dbeafe; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .success-link { display: inline-block; margin-top: 10px; color: var(--primary); text-decoration: none; font-weight: bold; }
+        .label { text-align: left; font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 5px; display: block; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎵 YT Downloader Pro</h1>
+        
+       
+        <span class="label">Video/Reel URL</span>
+        <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
+            <input type="text" id="url" placeholder="Paste YouTube, Insta, TikTok, Reddit, X link..." style="margin-bottom: 0;">
+            <button id="fetch-btn" onclick="fetchInfo()" style="width: auto; padding: 0.75rem 1.5rem; background: #64748b;">Fetch</button>
+        </div>
+
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+            <span class="label">Supported Platforms</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">YouTube</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Instagram</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Facebook</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">TikTok</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Twitter / X</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Reddit</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Pinterest</span>
+                <span style="background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Twitch</span>
+            </div>
+        </div>
+
+        <div id="video-info" style="display: none; margin-bottom: 1.5rem; text-align: left; background: #f1f5f9; padding: 1rem; border-radius: 0.5rem;">
+            <img id="video-thumb" src="" alt="Thumbnail" style="width: 100%; border-radius: 0.5rem; margin-bottom: 0.75rem;">
+            <div id="video-title" style="font-weight: 700; font-size: 1rem; line-height: 1.4; color: #1e293b; margin-bottom: 0.5rem;"></div>
+            
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem;">
+                <div style="flex: 1;">
+                    <div id="video-uploader" style="font-weight: 600; font-size: 0.85rem; color: #2563eb;"></div>
+                    <div id="channel-subs" style="font-size: 0.75rem; color: #64748b;"></div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem;">
+                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Views</div>
+                    <div id="video-views" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
+                </div>
+                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Likes</div>
+                    <div id="video-likes" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
+                </div>
+                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; text-align: center; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Duration</div>
+                    <div id="video-duration" style="font-size: 0.85rem; font-weight: 700; color: #0f172a;"></div>
+                </div>
+            </div>
+
+            <div id="video-desc" style="font-size: 0.8rem; color: #475569; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-height: 1.4;"></div>
+        </div>
+
+        <span class="label">Select Format</span>
+        <select id="format">
+            <option value="mp3">🎵 MP3 (Audio)</option>
+            <option value="mp4">🎥 MP4 (Video)</option>
+        </select>
+
+        <div id="quality-wrapper" style="display: none;">
+            <span class="label">Video Quality</span>
+            <select id="quality">
+                <option value="high">High (Best Available)</option>
+                <option value="medium">Medium (720p)</option>
+                <option value="low">Low (Worst/Smallest)</option>
+            </select>
+        </div>
+
+        <button id="btn" onclick="startProcess()">Start Download</button>
+        
+        <div id="status-box">
+            <div id="loader" class="spinner"></div>
+            <div id="status-text">Starting...</div>
+            <div id="download-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // Format change listener for Quality Toggle
+        document.getElementById('format').addEventListener('change', (e) => {
+            const qualityWrapper = document.getElementById('quality-wrapper');
+            qualityWrapper.style.display = e.target.value === 'mp4' ? 'block' : 'none';
+        });
+
+        async function fetchInfo() {
+            const urlInput = document.getElementById('url');
+            const fetchBtn = document.getElementById('fetch-btn');
+            const statusText = document.getElementById('status-text');
+            const statusBox = document.getElementById('status-box');
+            const videoInfo = document.getElementById('video-info');
+            
+            if (!urlInput.value) return alert("Please enter a URL first!");
+            
+            fetchBtn.disabled = true;
+            fetchBtn.innerText = "Fetching...";
+            statusBox.style.display = 'block';
+            document.getElementById('download-area').innerHTML = '';
+            document.getElementById('loader').style.display = 'block';
+            statusText.innerText = "Fetching video details...";
+            videoInfo.style.display = 'none';
+            
+            try {
+                const res = await fetch('/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlInput.value })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('video-thumb').src = data.thumbnail;
+                    document.getElementById('video-title').textContent = data.title;
+                    
+                    document.getElementById('video-uploader').textContent = data.uploader || 'Unknown Channel';
+                    
+                    const formatNum = (num) => num ? new Intl.NumberFormat('en-US', { notation: "compact", compactDisplay: "short" }).format(num) : 'N/A';
+                    const formatTime = (secs) => secs ? new Date(secs * 1000).toISOString().substring(14, 19) : '00:00';
+
+                    document.getElementById('channel-subs').textContent = data.channel_follower_count ? `${formatNum(data.channel_follower_count)} subs` : '';
+                    document.getElementById('video-views').textContent = formatNum(data.view_count);
+                    document.getElementById('video-likes').textContent = formatNum(data.like_count);
+                    document.getElementById('video-duration').textContent = formatTime(data.duration);
+                    document.getElementById('video-desc').textContent = data.description || 'No description available.';
+
+                    videoInfo.style.display = 'block';
+                    
+                    if (data.resolutions && data.resolutions.length > 0) {
+                        const qSelect = document.getElementById('quality');
+                        qSelect.innerHTML = '';
+                        // Map the top 3 resolutions to High, Medium, Low to maintain backend compatibility
+                        const labels = ['High', 'Medium', 'Low'];
+                        const values = ['high', 'medium', 'low'];
+                        for (let i = 0; i < Math.min(3, data.resolutions.length); i++) {
+                            qSelect.innerHTML += `<option value="${values[i]}">${labels[i]} (${data.resolutions[i]}p)</option>`;
+                        }
+                    }
+                    
+                    statusBox.style.display = 'none';
+                } else {
+                    statusText.innerText = "❌ Fetch failed: " + (data.error || "Unknown error");
+                    document.getElementById('loader').style.display = 'none';
+                }
+            } catch (err) {
+                statusText.innerText = "Error connecting to server.";
+                document.getElementById('loader').style.display = 'none';
+            }
+            
+            fetchBtn.disabled = false;
+            fetchBtn.innerText = "Fetch";
+        }
+
+        async function startProcess() {
+            const urlInput = document.getElementById('url');
+            const formatInput = document.getElementById('format');
+            const qualityInput = document.getElementById('quality');
+            const btn = document.getElementById('btn');
+            const statusBox = document.getElementById('status-box');
+            const statusText = document.getElementById('status-text');
+            const downloadArea = document.getElementById('download-area');
+
+            if (!urlInput.value) return alert("URL please!");
+
+            const selectedFormat = formatInput.value;
+            const selectedQuality = qualityInput.value;
+
+            // UI Reset
+            btn.disabled = true;
+            statusBox.style.display = 'block';
+            document.getElementById('loader').style.display = 'block';
+            downloadArea.innerHTML = '';
+            statusText.innerText = "Sending to server...";
+
+            try {
+                const res = await fetch('/jobs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        url: urlInput.value, 
+                        format: selectedFormat,
+                        quality: selectedQuality 
+                    })
+                });
+                const data = await res.json();
+
+                if (data.jobId) {
+                    const poll = setInterval(async () => {
+                        const sRes = await fetch(`/jobs/${data.jobId}`);
+                        const sData = await sRes.json();
+                        
+                        statusText.innerText = `Current Status: ${sData.status.toUpperCase()}`;
+
+                        if (sData.status === 'done') {
+                            clearInterval(poll);
+                            document.getElementById('loader').style.display = 'none';
+                            statusText.innerText = "✅ Process Complete!";
+                            
+                            const linkText = selectedFormat === 'mp4' ? "Download Video (MP4)" : "Download Audio (MP3)";
+                            downloadArea.innerHTML = `<a class="success-link" href="${sData.download_url}" target="_blank">${linkText}</a>`;
+                            
+                            btn.disabled = false;
+                        } else if (sData.status === 'failed') {
+                            clearInterval(poll);
+                            document.getElementById('loader').style.display = 'none';
+                            statusText.innerText = "❌ Failed: " + (sData.error_message || "Unknown error");
+                            btn.disabled = false;
+                        }
+                    }, 2000);
+                }
+            } catch (e) {
+                statusText.innerText = "Error connecting to server.";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

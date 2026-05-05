@@ -53,6 +53,9 @@ ssh -o StrictHostKeyChecking=no $USER@$DROPLET_IP << 'EOF'
   
   # Start API, Worker, and Nginx (No Postgres/Redis, it will use Supabase/Upstash)
   docker compose -f docker-compose.prod.yml up -d --build
+  
+  # Restart Nginx to clear its internal DNS cache (prevents 502 Bad Gateway)
+  docker compose -f docker-compose.prod.yml restart nginx
 EOF
 
 echo "✅ Deployment complete!"

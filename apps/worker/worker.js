@@ -29,3 +29,39 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 
 logger.info('👷 Worker is active and waiting for jobs...');
+
+// --- Auto-Cleanup Logic ---
+const fs = require('fs');
+const path = require('path');
+
+function cleanupOldFiles() {
+  const directory = path.resolve(__dirname, '../../downloads');
+  if (!fs.existsSync(directory)) return;
+
+  const maxAgeMs = 24 * 60 * 60 * 1000; // 24 hours
+  const now = Date.now();
+
+  fs.readdir(directory, (err, files) => {
+    if (err) return logger.error(`[Cleanup] Error reading dir: ${err.message}`);
+    
+    files.forEach(file => {
+      // Don't delete hidden files like .gitkeep or cookies.txt
+      if (file.startsWith('.') || file === 'cookies.txt') return;
+
+      const filePath = path.join(directory, file);
+      fs.stat(filePath, (err, stats) => {
+        if (err) return;
+        
+        if (now - stats.mtimeMs > maxAgeMs) {
+          fs.unlink(filePath, err => {
+            if (!err) logger.info(`[Cleanup] Deleted old file: ${file}`);
+          });
+        }
+      });
+    });
+  });
+}
+
+// Run cleanup immediately on startup, then every 1 hour
+cleanupOldFiles();
+setInterval(cleanupOldFiles, 60 * 60 * 1000);

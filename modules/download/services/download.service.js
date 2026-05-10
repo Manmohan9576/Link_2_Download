@@ -39,6 +39,14 @@ class DownloadService {
       if (!fileToUpload) throw new Error('File not found after download.');
 
       const outputPath = path.join(tmpDir, fileToUpload);
+      const stats = fs.statSync(outputPath);
+      
+      if (stats.size === 0) {
+        throw new Error('Downloaded file is empty (0 bytes). yt-dlp likely failed or was blocked.');
+      }
+      
+      logger.info(`Downloaded file: ${fileToUpload} (${(stats.size / 1024 / 1024).toFixed(2)} MB)`);
+      
       const uploadedFileKey = await this.uploadToApi(outputPath, dbJobId);
       const fileKey = uploadedFileKey || outputPath;
 
@@ -57,7 +65,22 @@ class DownloadService {
   }
 
   static async uploadToApi(filePath, dbJobId) {
-    if (!process.env.API_BASE_URL) return null;
+    // If API_BASE_URL is not set, save file locally and return the path
+    if (!process.env.API_BASE_URL) {
+      const fs = require('fs');
+      const path = require('path');
+      const uploadsDir = path.resolve(__dirname, '../../../downloads');
+      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+      
+      const fileName = path.basename(filePath);
+      const localPath = path.join(uploadsDir, fileName);
+      
+      // Copy file from tmp to downloads folder
+      fs.copyFileSync(filePath, localPath);
+      
+      logger.info(`Saved file locally: ${localPath}`);
+      return localPath;
+    }
 
     const fileName = path.basename(filePath);
     const url = new URL('/internal/jobs/' + dbJobId + '/file', process.env.API_BASE_URL);

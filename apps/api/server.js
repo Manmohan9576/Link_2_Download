@@ -7,6 +7,11 @@ const logger = require('../../shared/utils/logger');
 
 // Plugins Setup
 fastify.register(require('@fastify/static'), {
+  root: path.join(__dirname, '../../downloads'),
+  prefix: '/downloads', 
+});
+
+fastify.register(require('@fastify/static'), {
   root: path.join(__dirname),
   prefix: '/', 
 });

@@ -1,4 +1,5 @@
 const { z } = require('zod');
+const path = require('path');
 const db = require('../../../infra/db/postgres');
 const { audioQueue } = require('../../../infra/queue/bullmq');
 const { JOB_STATUS } = require('../../../shared/utils/constants');
@@ -35,7 +36,15 @@ class JobController {
 
     const job = res.rows[0];
     if (job.status === JOB_STATUS.DONE && job.file_key) {
-      job.download_url = '/jobs/' + job.id + '/download';
+      // Check if file_key is a local path or a URL path
+      if (job.file_key.startsWith('/')) {
+        // Local file path - serve via /downloads endpoint
+        const fileName = path.basename(job.file_key);
+        job.download_url = '/downloads/' + encodeURIComponent(fileName);
+      } else {
+        // Remote URL or API path
+        job.download_url = '/jobs/' + job.id + '/download';
+      }
     }
 
     return job;
